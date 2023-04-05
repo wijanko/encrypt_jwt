@@ -1,0 +1,25 @@
+require 'byebug'
+require "openssl"
+require "jwt"
+
+id_token = "eyJraWQiOiJiMjFjNDg3NWJlMjU2MDJmNTBkOGY0OGRlZmIyMmMyZDBjZGExNGZmYjEwZWIyZjk1YTllZmQyOTQ0NDRlM2I0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJBZnJpd2lzZSIsInN1YiI6InVzZXJAZXhhbXBsZS5jb20iLCJhdWQiOiI5MkdyTHcyOWRmSHc5TWI0QVkwa2pYdHh1TmZ1Ty1SSEp2R3hWOVN3TF9NIiwiZXhwIjoxNjgwNzIzMDE2LCJpYXQiOjE2ODA3MjI4OTYsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSJ9.cMdG3ubajeyCUdxGb8LGBhFftjcAFdoiTfRu_WrXQ7jLOYv_T6JS2vnfBJlMe6xFmLC67UWpDTAhiLnQPzuRDTvVJ7-KtxKTPL1IAhDVOEgxxqL_ZYyP7OuGDb3Ilw-2cOlqppZC_BDwrl3jOzwBPU8U_N8ERawK58AAhuzXyTLLhAEG4hlJaWUOWIkGErml8bY-riNN3g9KoE0mW9W-6RXo4a1JsJpn9vuXNXSBRzIwD1dfav7mNGJ6qWMjPtAfr5qjCJx88dtdd_yvu-NJ1-RPcxg7MVCQnw-4pOIQalq0Hqdfubwb6kbw8inqQfJQ4ZoRKj0c3wUZ3ESuqQd43g"
+
+public_key = <<~KEY
+  -----BEGIN PUBLIC KEY-----
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx6bJPs6Vz6ThYBAGxWxr
+  1Yox1NRnQSlysPjiASPv2HbmTdVlMLiwcS0Jk6LUuWa2njFAsMz0mmihDaLeYuCl
+  4Tz85tcnHvvNWapcFD+Ns2sCaxKROlw95qicGSG+n9qtqCSW3EW8CoNPNYMOudO1
+  PfXiEjD8Qys6pjhJgxxm0IQA5W7PdSLJDDLEp6vtDrCBPqAQtdIbjSVV8N1RJx4G
+  Ds7UuHzTwVm5u/xU/HHNGZ0dTVk307KWuupzQvbdCg/n2h3Wjnwi+sAnF2b3ofXg
+  bqvPauoBUJKpYI7Tju5G4V2ylc7FBuCv30sT2A40IFE550zFyMhrNAtK2Z4Jk5qn
+  bwIDAQAB
+  -----END PUBLIC KEY-----
+KEY
+
+rsa_public = OpenSSL::PKey::RSA.new(public_key)
+decoded_id_token = JWT.decode(id_token, rsa_public, true, { algorithm: 'RS256' }).first
+
+byebug
+
+puts "end"
+
